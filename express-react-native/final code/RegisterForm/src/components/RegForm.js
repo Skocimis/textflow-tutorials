@@ -3,9 +3,9 @@ import React from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 
 export default function RegForm({ navigation }) {
-    const [email, setEmail] = useState("")
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("my.email@gmail.com")
+    const [phoneNumber, setPhoneNumber] = useState("+381690156360")
+    const [password, setPassword] = useState("password")
 
     return <View style={styles.regform}>
         <Text style={styles.header}>Registration</Text>
@@ -30,20 +30,20 @@ export default function RegForm({ navigation }) {
         <TouchableOpacity
             style={styles.button}
             onPress={() => {
-                fetch("http://192.168.1.18:2000/register", {
+                fetch("http://192.168.1.18:2000/verify", {
                     method: "POST",
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        email, phoneNumber, password
+                        phoneNumber
                     })
                 })
                     .then(res => res.json())
                     .then(json => {
                         if (json.success) {
-                            navigation.navigate("Dashboard")
+                            navigation.navigate("VerificationForm", { email, phoneNumber, password })
                         }
                         else {
                             Alert.alert("Error", "Could not sign up");
